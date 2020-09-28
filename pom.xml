@@ -18,6 +18,7 @@
         <module>concurrent-example</module>
         <module>redis-example</module>
         <module>proxy-example</module>
+        <module>serialization-example</module>
     </modules>
 
     <dependencyManagement>
