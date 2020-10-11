@@ -10,8 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
+import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.client.producer.TransactionListener;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
@@ -37,21 +39,21 @@ public class OrderService implements InitializingBean, DisposableBean, Transacti
             TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2000), new ThreadFactory() {
                 @Override
                 public Thread newThread(Runnable r) {
-                    Thread thread = new Thread(r);
-                    thread.setName("submit-order-transaction-msg-check-thread");
-                    return thread;
+                    return new Thread(r, "submit-order-transaction-msg-check-thread");
                 }
             });
 
     @Autowired
     private OrderRepository orderRepository;
 
-    public void submitOrderInTransaction(OrderEntity orderEntity) throws MQClientException, UnsupportedEncodingException {
+    public boolean submitOrderInTransaction(OrderEntity orderEntity) throws MQClientException, UnsupportedEncodingException {
         Message msg =
                 new Message(TOPIC, TAG, KEY_PREFIX + orderEntity.getOrderId(), JSON.toJSONString(orderEntity).getBytes(RemotingHelper.DEFAULT_CHARSET));
-        producer.sendMessageInTransaction(msg, new OrderOperation(orderEntity, OrderOperation.SUBMIT));
+        TransactionSendResult sendResult = producer.sendMessageInTransaction(msg, new OrderOperation(orderEntity, OrderOperation.SUBMIT));
+        return sendResult.getSendStatus() == SendStatus.SEND_OK;
     }
 
+    // 执行本地事务
     @Override
     public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {
         try {
@@ -88,9 +90,11 @@ public class OrderService implements InitializingBean, DisposableBean, Transacti
         // TODO: 2020/9/25
     }
 
+    // 反查本地事务
     @Override
     public LocalTransactionState checkLocalTransaction(MessageExt msg) {
         // TODO: 2020/9/25 queryOrderLocally
+//        String orderId = msg.getProperty("orderId");
         OrderEntity orderEntity = orderRepository.queryByTransactionId(msg.getMsgId());
         if (orderEntity == null) return LocalTransactionState.COMMIT_MESSAGE;
         return LocalTransactionState.ROLLBACK_MESSAGE;
