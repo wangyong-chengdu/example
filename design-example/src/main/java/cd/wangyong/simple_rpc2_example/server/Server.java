@@ -3,21 +3,21 @@ package cd.wangyong.simple_rpc2_example.server;
 import java.io.Closeable;
 import java.io.File;
 import java.net.URI;
-import java.util.ServiceLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cd.wangyong.simple_rpc2.NameService;
-import cd.wangyong.simple_rpc2.RpcAccessPoint;
+import cd.wangyong.simple_rpc2.api.NameService;
+import cd.wangyong.simple_rpc2.api.RpcAccessPoint;
+import cd.wangyong.simple_rpc2.api.spi.ServiceSupport;
 import cd.wangyong.simple_rpc2_example.HelloService;
 
 /**
  * @author andy
  * @since 2020/10/11
  */
-public class ServerBootstrap {
-    private static final Logger logger = LoggerFactory.getLogger(ServerBootstrap.class);
+public class Server {
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
 
     public static void main(String[] args) throws Exception {
@@ -26,7 +26,7 @@ public class ServerBootstrap {
 
         // 启动RPC框架、增加服务提供者
         logger.info("创建并启动RpcAccessPoint...");
-        try (RpcAccessPoint rpcAccessPoint = ServiceLoader.load(RpcAccessPoint.class).iterator().next();
+        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class);
              Closeable ignored = rpcAccessPoint.startService()) {
             NameService nameService = rpcAccessPoint.getNameService(nameServiceData.toURI());
             assert nameService != null;

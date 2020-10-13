@@ -1,0 +1,3 @@
+cd.wangyong.simple_rpc2.serialize.impl.MetadataSerializer
+cd.wangyong.simple_rpc2.serialize.impl.RpcRequestSerializer
+cd.wangyong.simple_rpc2.serialize.impl.StringSerializer

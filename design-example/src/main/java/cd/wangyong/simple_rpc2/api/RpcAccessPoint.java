@@ -1,8 +1,10 @@
-package cd.wangyong.simple_rpc2;
+package cd.wangyong.simple_rpc2.api;
 
 import java.io.Closeable;
-import java.io.File;
 import java.net.URI;
+import java.util.Collection;
+
+import cd.wangyong.simple_rpc2.api.spi.ServiceSupport;
 
 /**
  * RPC对外提供服务的接口（调用端、服务端两端）
@@ -36,8 +38,17 @@ public interface RpcAccessPoint extends Closeable {
 
     /**
      * 获取注册中心的引用
-     * @param uri
-     * @return
+     * @param nameServiceUri 注册中心URI
+     * @return 注册中心引用
      */
-    NameService getNameService(URI uri);
+    default NameService getNameService(URI nameServiceUri) {
+        Collection<NameService> nameServices = ServiceSupport.loadAll(NameService.class);
+        for (NameService nameService : nameServices) {
+            if (nameService.supportedSchemes().contains(nameServiceUri.getScheme())) {
+                nameService.connect(nameServiceUri);
+                return nameService;
+            }
+        }
+        return null;
+    }
 }

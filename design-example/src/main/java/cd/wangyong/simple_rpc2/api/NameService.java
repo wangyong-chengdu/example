@@ -1,7 +1,8 @@
-package cd.wangyong.simple_rpc2;
+package cd.wangyong.simple_rpc2.api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 
 /**
  * 名字服务（即注册中心）
@@ -23,5 +24,16 @@ public interface NameService {
      * @return 服务地址
      */
     URI lookupService(String serviceName) throws IOException;
+
+    /**
+     * 所有支持的协议
+     */
+    Collection<String> supportedSchemes();
+
+    /**
+     * 给定注册中心服务端URI，去建立与注册中心的连接
+     * @param nameServiceUri 注册中心地址
+     */
+    void connect(URI nameServiceUri);
 
 }

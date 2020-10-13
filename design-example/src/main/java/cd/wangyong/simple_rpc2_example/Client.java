@@ -3,13 +3,13 @@ package cd.wangyong.simple_rpc2_example;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ServiceLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cd.wangyong.simple_rpc2.NameService;
-import cd.wangyong.simple_rpc2.RpcAccessPoint;
+import cd.wangyong.simple_rpc2.api.NameService;
+import cd.wangyong.simple_rpc2.api.RpcAccessPoint;
+import cd.wangyong.simple_rpc2.api.spi.ServiceSupport;
 import cd.wangyong.simple_rpc2_example.HelloService;
 
 /**
@@ -23,9 +23,9 @@ public class Client {
         File nameServiceData = new File(new File(System.getProperty("java.io.tmpdir")), "cd.wangyong.simple_rpc2_name_service.data");
         String serviceName = HelloService.class.getCanonicalName();
 
-        try (RpcAccessPoint rpcAccessPoint = ServiceLoader.load(RpcAccessPoint.class).iterator().next()) {
+        try (RpcAccessPoint rpcAccessPoint = ServiceSupport.load(RpcAccessPoint.class)) {
             // 查找服务，获取服务实例
-            NameService nameService = rpcAccessPoint.getNameService(nameServiceData.toURI())
+            NameService nameService = rpcAccessPoint.getNameService(nameServiceData.toURI());
             URI uri = nameService.lookupService(serviceName);
             assert uri != null;
             logger.info("找到服务{}，提供者: {}.", serviceName, uri);
