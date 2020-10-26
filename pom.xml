@@ -21,6 +21,7 @@
         <module>serialization-example</module>
         <module>kafka-example</module>
         <module>effective_java_example</module>
+        <module>canal-example</module>
     </modules>
 
     <dependencyManagement>
