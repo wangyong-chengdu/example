@@ -13,7 +13,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 
-public class KryoTest {
+public class KryoSerializationTest {
     private Kryo kryo;
     private Output output;
     private Input input;
