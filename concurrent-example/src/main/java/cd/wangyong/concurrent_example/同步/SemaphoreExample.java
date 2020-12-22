@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example;
+package cd.wangyong.concurrent_example.同步;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Semaphore;

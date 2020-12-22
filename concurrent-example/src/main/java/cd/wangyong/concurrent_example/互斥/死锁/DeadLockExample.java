@@ -1,4 +1,4 @@
-package cd.wangyong.lock_example;
+package cd.wangyong.concurrent_example.互斥.死锁;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

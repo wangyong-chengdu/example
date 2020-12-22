@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example.completable_future;
+package cd.wangyong.concurrent_example.分工.completable_future;
 
 import java.util.concurrent.ExecutionException;
 

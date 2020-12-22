@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example.lock.try_with_lock;
+package cd.wangyong.concurrent_example.互斥.lock.try_with_lock;
 
 import java.io.Closeable;
 import java.io.IOException;

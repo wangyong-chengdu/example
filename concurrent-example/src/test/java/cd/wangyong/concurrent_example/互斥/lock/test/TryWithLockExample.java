@@ -1,9 +1,9 @@
-package cd.wangyong.concurrent_example.lock.test;
+package cd.wangyong.concurrent_example.互斥.lock.test;
 
 import java.io.IOException;
 import java.util.concurrent.locks.ReentrantLock;
 
-import cd.wangyong.concurrent_example.lock.try_with_lock.TryWithLock;
+import cd.wangyong.concurrent_example.互斥.lock.try_with_lock.TryWithLock;
 
 /**
  * @author andy

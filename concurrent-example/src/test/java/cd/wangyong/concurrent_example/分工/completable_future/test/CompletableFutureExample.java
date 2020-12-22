@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example.completable_future.test;
+package cd.wangyong.concurrent_example.分工.completable_future.test;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
