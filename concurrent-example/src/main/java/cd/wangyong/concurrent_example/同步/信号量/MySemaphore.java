@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example.同步;
+package cd.wangyong.concurrent_example.同步.信号量;
 
 import java.util.LinkedList;
 import java.util.Queue;
