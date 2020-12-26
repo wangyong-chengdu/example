@@ -1,4 +1,4 @@
-package cd.wangyong.concurrent_example.分工.completable_future.test;
+package cd.wangyong.concurrent_example.分工;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -40,6 +40,25 @@ public class CompletableFutureExample {
             }
             logger.info("run end ...");
         });
+    }
+
+    @Test
+    public void testThenApply3() {
+        CompletableFuture<String> f0 = CompletableFuture.supplyAsync(() -> "hello, world")
+                .thenApply(s -> s + " QQ")
+                .thenApply(String::toUpperCase);
+
+        System.out.println(f0.join());
+    }
+
+    @Test
+    public void testHandleException() {
+        CompletableFuture<Integer>
+                f0 = CompletableFuture
+                .supplyAsync(()->7/0)
+                .thenApply(r->r*10)
+                .exceptionally(e->0);
+        System.out.println(f0.join());
     }
 
     @Test
