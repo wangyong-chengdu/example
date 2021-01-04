@@ -1,4 +1,4 @@
-package cd.wangyong.disruptor_example;
+package cd.wangyong.concurrent_example.disruptor;
 
 public class LongEvent {
     private long value;

@@ -1,15 +1,21 @@
-package cd.wangyong.concurrent_example.模式.copy_on_write;
+package cd.wangyong.concurrent_example.模式.写时复制;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author andy
  * @since 2020/12/26
  */
 public class RouterExample {
+    /**
+     * 路由结点
+     */
     static final class Router {
         private final String ip;
         private final int port;
@@ -37,8 +43,30 @@ public class RouterExample {
         }
     }
 
+    /**
+     * 路由表
+     */
     public class RouterTable {
         private ConcurrentHashMap<String, CopyOnWriteArraySet<Router>> table = new ConcurrentHashMap<>();
+
+        private volatile boolean changed;
+
+        private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+        public void backup2Local() {
+            scheduledExecutorService.scheduleWithFixedDelay(() -> autoSave(), 1, 1, TimeUnit.MINUTES);
+        }
+
+        private void autoSave() {
+            if (!changed) return;
+            changed = false;
+            save2Local();
+        }
+
+        private void save2Local() {
+
+        }
+
 
         public Set<Router> get(String iface) {
             return table.get(iface);
@@ -49,12 +77,17 @@ public class RouterExample {
             Set<Router> set = get(router.iface);
             if (set != null) {
                 set.remove(router);
+                changed = true;
             }
         }
 
+        /**
+         * 增加路由
+         */
         public void add(Router router) {
             CopyOnWriteArraySet<Router> routers = table.computeIfAbsent(router.iface, r -> new CopyOnWriteArraySet<>());
             routers.add(router);
+            changed = true;
         }
     }
 }
