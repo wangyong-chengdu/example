@@ -23,6 +23,7 @@
         <module>effective_java_example</module>
         <module>canal-example</module>
         <module>grpc-example</module>
+        <module>distributed-example</module>
     </modules>
 
     <dependencyManagement>
