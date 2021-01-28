@@ -46,7 +46,6 @@ public class DeadLockExample {
         while (Thread.activeCount() > 0) {
             Thread.yield();
         }
-
     }
 
 }

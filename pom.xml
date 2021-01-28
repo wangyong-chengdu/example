@@ -24,6 +24,7 @@
         <module>canal-example</module>
         <module>grpc-example</module>
         <module>distributed-example</module>
+        <module>jvm-example</module>
     </modules>
 
     <dependencyManagement>
