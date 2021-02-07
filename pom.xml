@@ -25,6 +25,8 @@
         <module>grpc-example</module>
         <module>distributed-example</module>
         <module>jvm-example</module>
+        <module>curator-example</module>
+        <module>zookeeper-example</module>
     </modules>
 
     <dependencyManagement>
